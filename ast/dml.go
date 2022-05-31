@@ -145,7 +145,7 @@ func NewCrossJoin(left, right ResultSetNode) (n *Join) {
 
 // Restore implements Node interface.
 func (n *Join) Restore(ctx *format.RestoreCtx) error {
-	useCommaJoin := true
+	useCommaJoin := false
 	_, leftIsJoin := n.Left.(*Join)
 
 	if leftIsJoin && n.Left.(*Join).Right == nil {
@@ -158,13 +158,13 @@ func (n *Join) Restore(ctx *format.RestoreCtx) error {
 	}
 
 	if leftIsJoin && !useCommaJoin {
-		ctx.WritePlain("(")
+		// ctx.WritePlain("(")
 	}
 	if err := n.Left.Restore(ctx); err != nil {
 		return errors.Annotate(err, "An error occurred while restore Join.Left")
 	}
 	if leftIsJoin && !useCommaJoin {
-		ctx.WritePlain(")")
+		// ctx.WritePlain(")")
 	}
 	if n.Right == nil {
 		return nil
