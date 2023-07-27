@@ -180,6 +180,8 @@ func (n *Join) Restore(ctx *format.RestoreCtx) error {
 		ctx.WriteKeyWord(" NATURAL")
 	}
 	switch n.Tp {
+	case CrossJoin:
+		ctx.WriteKeyWord(" CROSS")
 	case LeftJoin:
 		ctx.WriteKeyWord(" LEFT")
 	case RightJoin:
