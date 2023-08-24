@@ -1,7 +1,6 @@
 module github.com/xiaonerner0821/parser
 
 require (
-	github.com/cznic/golex v0.0.0-20181122101858-9c343928389c // indirect
 	github.com/cznic/mathutil v0.0.0-20181122101859-297441e03548
 	github.com/cznic/parser v0.0.0-20160622100904-31edd927e5b1
 	github.com/cznic/sortutil v0.0.0-20181122101858-f5f958428db8
@@ -12,8 +11,6 @@ require (
 	github.com/pingcap/errors v0.11.5-0.20201029093017-5a7df2af2ac7
 	github.com/pingcap/log v0.0.0-20200511115504-543df19646ad
 	github.com/pingcap/parser v0.0.0-20210623034316-5ee95ed0081f
-	github.com/remyoudompheng/bigfft v0.0.0-20190728182440-6a916e37a237 // indirect
-	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/zap v1.15.0
 	golang.org/x/text v0.3.1-0.20180807135948-17ff2d5776d2
 )
