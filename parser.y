@@ -8234,7 +8234,7 @@ TableRefs:
 |	TableRefs ',' EscapedTableRef
 	{
 		/* from a, b is default cross join */
-		$$ = &ast.Join{Left: $1.(ast.ResultSetNode), Right: $3.(ast.ResultSetNode), Tp: ast.CrossJoin}
+		$$ = &ast.Join{Left: $1.(ast.ResultSetNode), Right: $3.(ast.ResultSetNode), Tp: ast.InnerJoin}
 	}
 
 EscapedTableRef:
@@ -8392,11 +8392,11 @@ JoinTable:
 |	TableRef CrossOpt TableRef "ON" Expression
 	{
 		on := &ast.OnCondition{Expr: $5}
-		$$ = &ast.Join{Left: $1.(ast.ResultSetNode), Right: $3.(ast.ResultSetNode), Tp: ast.CrossJoin, On: on}
+		$$ = &ast.Join{Left: $1.(ast.ResultSetNode), Right: $3.(ast.ResultSetNode), Tp: ast.InnerJoin, On: on}
 	}
 |	TableRef CrossOpt TableRef "USING" '(' ColumnNameList ')'
 	{
-		$$ = &ast.Join{Left: $1.(ast.ResultSetNode), Right: $3.(ast.ResultSetNode), Tp: ast.CrossJoin, Using: $6.([]*ast.ColumnName)}
+		$$ = &ast.Join{Left: $1.(ast.ResultSetNode), Right: $3.(ast.ResultSetNode), Tp: ast.InnerJoin, Using: $6.([]*ast.ColumnName)}
 	}
 |	TableRef JoinType OuterOpt "JOIN" TableRef "ON" Expression
 	{

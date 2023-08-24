@@ -65,6 +65,7 @@ const (
 	// RightJoin is right Join type.
 	RightJoin
 	FullJoin
+	InnerJoin
 )
 
 // Join represents table join.
@@ -124,7 +125,7 @@ type Join struct {
 func NewCrossJoin(left, right ResultSetNode) (n *Join) {
 	rj, ok := right.(*Join)
 	if !ok || rj.Right == nil {
-		return &Join{Left: left, Right: right, Tp: CrossJoin}
+		return &Join{Left: left, Right: right, Tp: InnerJoin}
 	}
 
 	var leftMostLeafFatherOfRight = rj
@@ -145,7 +146,7 @@ func NewCrossJoin(left, right ResultSetNode) (n *Join) {
 		}
 	}
 
-	newCrossJoin := &Join{Left: left, Right: leftMostLeafFatherOfRight.Left, Tp: CrossJoin}
+	newCrossJoin := &Join{Left: left, Right: leftMostLeafFatherOfRight.Left, Tp: InnerJoin}
 	leftMostLeafFatherOfRight.Left = newCrossJoin
 	return rj
 }
