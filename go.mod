@@ -11,7 +11,7 @@ require (
 	github.com/pingcap/check v0.0.0-20190102082844-67f458068fc8
 	github.com/pingcap/errors v0.11.5-0.20201029093017-5a7df2af2ac7
 	github.com/pingcap/log v0.0.0-20200511115504-543df19646ad
-	github.com/pingcap/parser v3.1.2+incompatible // indirect
+	github.com/pingcap/parser v0.0.0-20210623034316-5ee95ed0081f
 	github.com/remyoudompheng/bigfft v0.0.0-20190728182440-6a916e37a237 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/zap v1.15.0
