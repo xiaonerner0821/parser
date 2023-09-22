@@ -1284,6 +1284,7 @@ import (
 	Year              "{YEAR|SQL_TSI_YEAR}"
 	DeallocateSym     "Deallocate or drop"
 	OuterOpt          "optional OUTER clause"
+	FullOpt           "Full join option"
 	CrossOpt          "Cross join option"
 	TablesTerminalSym "{TABLE|TABLES}"
 	IsolationLevel    "Isolation level"
@@ -1370,10 +1371,12 @@ import (
 %precedence order
 %precedence lowerThanFunction
 %precedence function
+%precedence lowerThanFullKeyword
 
 /* A dummy token to force the priority of TableRef production in a join. */
 %left tableRefPriority
-%left join straightJoin inner cross left right full natural
+%left join straightJoin inner cross left right natural
+%left full
 %precedence lowerThanOn
 %precedence on using
 %right assignmentEq
@@ -5493,7 +5496,7 @@ UnReservedKeyword:
 |	"FLUSH"
 |	"FOLLOWING"
 |	"FORMAT"
-|	"FULL"
+|	"FULL" %prec lowerThanFullKeyword
 |	"GENERAL"
 |	"GLOBAL"
 |	"HASH"
@@ -8289,10 +8292,11 @@ PartitionNameListOpt:
 	}
 
 TableAsNameOpt:
+	%prec lowerThanFullKeyword
 	{
 		$$ = model.CIStr{}
 	}
-|	TableAsName
+|	TableAsName %prec lowerThanFullKeyword
 
 TableAsName:
 	Identifier
@@ -8389,6 +8393,11 @@ JoinTable:
 	{
 		$$ = ast.NewCrossJoin($1.(ast.ResultSetNode), $3.(ast.ResultSetNode))
 	}
+|	TableRef FullOpt TableRef "ON" Expression
+	{
+		on := &ast.OnCondition{Expr: $5}
+		$$ = &ast.Join{Left: $1.(ast.ResultSetNode), Right: $3.(ast.ResultSetNode), Tp: ast.FullJoin, On: on}
+	}
 |	TableRef CrossOpt TableRef "ON" Expression
 	{
 		on := &ast.OnCondition{Expr: $5}
@@ -8424,6 +8433,9 @@ JoinTable:
 		on := &ast.OnCondition{Expr: $5}
 		$$ = &ast.Join{Left: $1.(ast.ResultSetNode), Right: $3.(ast.ResultSetNode), StraightJoin: true, On: on}
 	}
+
+FullOpt:
+	"FULL" "JOIN"
 
 JoinType:
 	"LEFT"
